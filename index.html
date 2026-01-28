@@ -1,0 +1,218 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vil du være min Valentine? ❤️</title>
+
+<style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #ffdde1, #ffc3a0);
+    background-size: 400% 400%;
+    animation: gradient 12s ease infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .card {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    max-width: 380px;
+    width: 90%;
+    position: relative;
+    z-index: 5;
+    animation: popIn 0.8s ease;
+  }
+
+  @keyframes popIn {
+    from {
+      transform: scale(0.7);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  h1 {
+    margin-bottom: 25px;
+    font-size: 26px;
+  }
+
+  button {
+    font-size: 18px;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  button:hover {
+    transform: scale(1.08);
+  }
+
+  .yes {
+    background: #ff4d6d;
+    color: white;
+    box-shadow: 0 0 15px rgba(255,77,109,0.6);
+  }
+
+  .no {
+    background: #ddd;
+    position: absolute;
+    animation: shake 1.2s infinite;
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+  }
+
+  #response {
+    font-size: 24px;
+    margin-top: 25px;
+  }
+
+  .love {
+    animation: glow 1.5s infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 8px #ff4d6d;
+    }
+    to {
+      text-shadow: 0 0 25px #ff4d6d;
+    }
+  }
+
+  /* Flyvende hjerter */
+  .heart {
+    position: fixed;
+    bottom: -30px;
+    font-size: 24px;
+    animation: floatUp 7s linear forwards;
+    pointer-events: none;
+  }
+
+  @keyframes floatUp {
+    from {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-120vh) scale(1.8);
+      opacity: 0;
+    }
+  }
+
+  /* Konfetti */
+  .confetti {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: red;
+    animation: confettiFall 4s linear forwards;
+  }
+
+  @keyframes confettiFall {
+    from {
+      transform: translateY(-10vh) rotate(0deg);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(110vh) rotate(720deg);
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h1 id="question">Vil du være min Valentine? ❤️</h1>
+
+  <button class="yes" id="yesBtn" onclick="yesClick()">Ja 😚</button>
+  <button class="no" id="noBtn">Nej 🥲</button>
+
+  <p id="response"></p>
+</div>
+
+<script>
+  const noBtn = document.getElementById("noBtn");
+  const yesBtn = document.getElementById("yesBtn");
+  const card = document.querySelector(".card");
+
+  noBtn.addEventListener("mouseover", moveButton);
+  noBtn.addEventListener("touchstart", moveButton);
+
+  function moveButton() {
+    const rect = card.getBoundingClientRect();
+
+    const x = Math.random() * (rect.width - noBtn.offsetWidth);
+    const y = Math.random() * (rect.height - noBtn.offsetHeight);
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+  }
+
+  function yesClick() {
+    document.getElementById("question").innerHTML = "YAAAAAY!!! 💖💖💖";
+    document.getElementById("response").innerHTML =
+      "<span class='love'>Jeg elsker dig 🫶</span>";
+
+    noBtn.style.display = "none";
+    yesBtn.style.display = "none";
+
+    setInterval(createHeart, 250);
+    setInterval(createConfetti, 120);
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = ["❤️","💖","💕","💘"][Math.floor(Math.random()*4)];
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (20 + Math.random() * 25) + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 7000);
+  }
+
+  function createConfetti() {
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random() * 100 + "vw";
+    confetti.style.background =
+      ["#ff4d6d","#ffb3c6","#ffd6e0","#ff758f"][Math.floor(Math.random()*4)];
+    confetti.style.animationDuration = (3 + Math.random()*2) + "s";
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 5000);
+  }
+</script>
+
+</body>
+</html>
